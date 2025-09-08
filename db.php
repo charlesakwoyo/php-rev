@@ -1,0 +1,249 @@
+
+<!-- // $balance =5200;
+// $name ="charles";
+// $city ="Nairobi";
+
+// //purchase
+// if($name == "charles"||$city =="Nairobi"){
+//     echo "you can purchase anything you want below your balance";
+// }else{
+//     echo "you can buy now";
+// }
+
+
+//functions
+
+//   $birthYear=2000;
+// function getAge(){
+//     global $birthYear;
+//     $currentYear=2025;
+//     $age =$currentYear - $birthYear;
+
+//     echo "you are $age years old";
+// }
+// //call
+// getAge();
+
+//   $initialBalance =500;
+// function getBalance(){
+
+//     global $initialBalance;
+//     $amountUsed =200;
+//     $balance = $initialBalance - $amountUsed;
+
+//     echo "your balance is $balance ";
+// }
+// getBalance();
+
+// $age = "25";
+// $age = "(bool)$age";
+// var_dump(value:$age);
+// function add($num1,$num2) :int{
+//     $sum =(int)$num1 + (int)$num2;
+//     return $sum;
+// }er]/
+// echo add(num1: "500", num2:"200");
+
+//loops
+// $number = 0;
+//  while($number <= 10){
+//     echo $number . "<br>";
+//     $number++;
+
+//  }
+// $totalStudents = 50;
+//  while($totalStudents>=0){
+//     echo $totalStudents . "<br>";
+//     $totalStudents --;
+//  }
+
+// $number = 0;
+//   do{
+//     echo $number . "<br>";
+//     $number -- ;
+//   }while ($a <=10);
+
+
+//for
+
+// for($number =  0 ; $number <= 7; $number ++){
+//     echo $number . "<br>";
+// }
+
+
+//foreach => arrays
+//   $fruits = ["mangoes","oranges","melons"];
+//   echo $fruits[0];
+
+// foreach($fruits as $fruit){
+//     echo $fruit . "<br>";
+// }
+
+// $Students = ["charlse","brian","wash"];
+// foreach($Students as $student){
+//     echo $student . "<br>";
+// } -->
+
+<!-- if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // only run if username exists
+    $name = htmlspecialchars($_POST["username"] ?? "");
+    echo "You typed this name: $name";
+} -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Register form</h1>
+
+    <form action="" method="post">
+        <label for="username">Name:</label>
+        <input type="text" name="username" id="username">
+
+        <label for="useremail">Email:</label>
+        <input type="text" name="useremail" id="useremail">
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html> --> 
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Message</title>
+</head>
+<body>
+    <h1> Message</h1>
+
+    <form action="" method="post">
+        <label for="friend">Friend's Name:</label>
+        <input type="text" name="friend" id="friend" required><br><br>
+
+        <label for="message">Your Message:</label><br>
+        <textarea name="message" id="message" rows="4" cols="40" required></textarea><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $friend = htmlspecialchars($_POST["friend"] ?? "");
+    $message = htmlspecialchars($_POST["message"] ?? "");
+
+    if (!empty($friend) && !empty($message)) {
+        echo "<p> Message sent to <strong>$friend</strong>: \"$message\"</p>";
+    } else {
+        echo "<p style='color:red;'>Please enter both friend and message.</p>";
+    }
+} -->
+
+
+
+
+
+<!-- if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["friend"], $_GET["message"])) {
+    $friend = htmlspecialchars($_GET["friend"]);
+    $message = htmlspecialchars($_GET["message"]);
+
+    echo "<p> Message sent to <strong>$friend</strong>: \"$message\"</p>";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Message</title>
+</head>
+<body>
+    <h1> Message</h1>
+
+    <form action="" method="get">
+        <label for="friend">Friend's Name:</label>
+        <input type="text" name="friend" id="friend" required><br><br>
+
+        <label for="message">Your Message:</label><br>
+        <textarea name="message" id="message" rows="4" cols="40" required></textarea><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html> -->
+
+
+<!-- $users = [
+    "Alice" => 1000,
+    "Bob"   => 2000,
+    "Charlie" => 1500,
+    "Diana" => 500
+];
+
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["username"], $_GET["amount"])) {
+    $username = htmlspecialchars($_GET["username"]);
+    $amount = (int) $_GET["amount"];
+
+    if (array_key_exists($username, $users)) {
+        $limit = $users[$username];
+
+        if ($amount <= $limit) {
+            $message = " $username has successfully got a loan of $amount.";
+        } else {
+            $message = " Loan failed! $username's limit is $limit, you requested $amount.";
+        }
+    } else {
+        $message = " User '$username' does not exist.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan System</title>
+</head>
+<body>
+    <h1>Loan Application</h1>
+
+    <form action="" method="get">
+        <label for="username">Enter Username:</label>
+        <input type="text" name="username" id="username" required><br><br>
+
+        <label for="amount">Enter Amount:</label>
+        <input type="number" name="amount" id="amount" required><br><br>
+
+        <button type="submit">Apply for Loan</button>
+    </form>
+
+
+</body>
+</html> -->
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+?>
