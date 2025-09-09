@@ -177,140 +177,15 @@
       .hero { padding-top: 3.25rem; }
     }
   </style>
-</head>
-<body>
-  
-  <?php include('layouts/navbar.php');
-  ?>
 
-
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">Fresh takes, every week</div>
-        <h1>Stories on design, code, and the creative process.</h1>
-        <p class="lead">Practical tutorials, opinion pieces, and industry interviews  curated for makers. Zero fluff, just useful reads.</p>
-        <div class="hero-actions">
-          <a class="btn" href="#featured">Explore Articles</a>
-          <a class="btn secondary" href="#newsletter">Subscribe</a>
-        </div>
-      </div>
-
-      
+<footer class="site">
+    <div class="container foot-grid">
+      <div class="copyright">© <span id="year"></span> Ink & Ideas. All rights reserved.</div>
+      <nav class="foot-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+        <a href="#">RSS</a>
+      </nav>
     </div>
-  </section>
-
-  <section id="featured">
-    <div class="container">
-      <div class="section-head">
-        <h2>Featured Posts</h2>
-        <p>Hand-picked reads to get you started.</p>
-      </div>
-
-      <div class="grid">
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Design</span><span class="tag">Accessibility</span>
-            </div>
-            <h3>Color systems that scale across themes</h3>
-            <p class="meta">7 min read · By Alex</p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Code</span><span class="tag">CSS</span>
-            </div>
-            <h3>Modern layouts with only CSS grid</h3>
-            <p class="meta">6 min read · By Collins </p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-
-    
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Career</span><span class="tag">Interviews</span>
-            </div>
-            <h3>What hiring managers really look for</h3>
-            <p class="meta">9 min read · By Eliana G.</p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-
-        
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Tutorial</span><span class="tag">HTML</span>
-            </div>
-            <h3>Semantic HTML that improves SEO</h3>
-            <p class="meta">5 min read · By Akwoyo G.</p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-
-        
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Inspiration</span>
-            </div>
-            <h3>From idea to launch in 30 days</h3>
-            <p class="meta">8 min read · By Charles A.</p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-
-        
-        <article class="card">
-          <div class="thumb" role="img" aria-label="Gradient thumbnail"></div>
-          <div class="content">
-            <div class="tags">
-              <span class="tag">Process</span><span class="tag">Writing</span>
-            </div>
-            <h3>Outlining blog posts like a pro</h3>
-            <p class="meta">4 min read · By Brian O.</p>
-            <a class="readmore" href="#">Read article </a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="newsletter">
-    <div class="container newsletter">
-      <div class="section-head">
-        <h2>Join the newsletter</h2>
-        <p>Get the latest posts in your inbox every Friday.</p>
-      </div>
-
-      <div class="nl-grid">
-        <p class="lead">No spam, ever. Just hand-crafted articles on design, code, and product. Unsubscribe in one click.</p>
-        <form class="field" action="#" method="post" onsubmit="return false" aria-label="Subscribe form">
-          <label class="sr-only" for="email">Email</label>
-          <input id="email" type="email" placeholder="you@example.com" required />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-   <?php include('layouts/footer.php');
-  ?>
-
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+  </footer>
