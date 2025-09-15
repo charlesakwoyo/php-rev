@@ -1,5 +1,4 @@
-<?php include('../layouts/navbar.php');
-
+<?php
 // process the form
 
 // connection
@@ -20,12 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
             $stmt = $conn->prepare($sql);
 
-            $stmt->bindParam(":username",var: $username);
-            $stmt->bindParam(":email",var: $email);
-            $stmt->bindParam(":password",var: $hashedpassword);
+            $stmt->bindParam(":username", $username);
+            $stmt->bindParam(":email", $email);
+            $stmt->bindParam(":password", $hashedpassword);
 
             if ($stmt->execute()) {
-                echo "Registration successful";
+                //  Redirect to dashboard after success
+                header("Location:../auth/login.php");
+                exit;
             }
         } catch (PDOException $e) {
             echo "An error occurred: " . $e->getMessage();
@@ -35,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+<?php include('../layouts/navbar.php'); ?>
 
 <style>
   body {
