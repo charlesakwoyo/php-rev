@@ -1,30 +1,28 @@
 <?php
-// process the form
-
 // connection
 require('../db.php');
 
-// register
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"]);
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
+    $role = trim($_POST["role"]);
 
-    if (!empty($username) && !empty($email) && !empty($password)) {
+    if (!empty($username) && !empty($email) && !empty($password) && !empty($role)) {
         // hash password
         $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
 
         try {
-            // sql
-            $sql = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+            $sql = "INSERT INTO users (username, email, password, role) 
+                    VALUES (:username, :email, :password, :role)";
             $stmt = $conn->prepare($sql);
 
             $stmt->bindParam(":username", $username);
             $stmt->bindParam(":email", $email);
             $stmt->bindParam(":password", $hashedpassword);
+            $stmt->bindParam(":role", $role);
 
             if ($stmt->execute()) {
-                //  Redirect to dashboard after success
                 header("Location:../auth/login.php");
                 exit;
             }
@@ -70,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     color: #444;
   }
 
-  .form-container input {
+  .form-container input, .form-container select {
     width: 100%;
     padding: 10px;
     margin-bottom: 18px;
@@ -79,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     transition: 0.3s;
   }
 
-  .form-container input:focus {
+  .form-container input:focus, .form-container select:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0,123,255,0.3);
@@ -113,6 +111,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <label for="password">Enter Password:</label>
     <input type="password" name="password" id="password" required>
+
+    <label for="role">Select Role:</label>
+    <select name="role" id="role" required>
+      <option value="">-- Choose Role --</option>
+      <option value="user">User</option>
+      <option value="employee">Employee</option>
+    </select>
 
     <button type="submit">Submit</button>
   </form>

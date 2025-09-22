@@ -1,256 +1,209 @@
 <?php
 session_start();
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["username"]) || !isset($_SESSION["role"])) {
     header("Location: ../auth/login.php");
     exit();
 }
 
-// Sample blog posts (replace with DB fetch later)
-$blogs = [
-    ["title" => "My First Blog", "category" => "Programming", "image" => "https://via.placeholder.com/150", "content" => "This is a short intro to my blog..."],
-    ["title" => "Healthy Lifestyle", "category" => "Lifestyle", "image" => "https://via.placeholder.com/150", "content" => "Some lifestyle tips and tricks..."],
-];
+$role = $_SESSION["role"];
+$username = htmlspecialchars($_SESSION["username"]);
 ?>
 
-<style>
-  :root {
-    --bg: #f5f7fa;
-    --card: #ffffff;
-    --primary: #007bff;
-    --primary-dark: #0056b3;
-    --danger: #dc3545;
-    --danger-dark: #b02a37;
-    --text: #333;
-    --muted: #666;
-    --radius: 12px;
-    --shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?= ucfirst($role) ?> Dashboard</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --primary: #4dabf7;
+      --primary-dark: #1c7ed6;
+      --danger: #f44336;
+      --danger-dark: #c62828;
+      --text: #e0e0e0;
+      --muted: #aaa;
+      --radius: 14px;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
 
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--bg);
-    margin: 0;
-    padding: 0;
-    color: var(--text);
-  }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--card);
-    padding: 20px 30px;
-    box-shadow: var(--shadow);
-  }
+    /* Header */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      padding: 20px 30px;
+      box-shadow: var(--shadow);
+      border-bottom: 1px solid #333;
+    }
 
-  .dashboard-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: var(--primary-dark);
-  }
+    .dashboard-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
 
-  .logout-btn {
-    background: var(--danger);
-    color: #fff;
-    padding: 10px 16px;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-  }
+    .logout-btn {
+      background: var(--danger);
+      color: #fff;
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
 
-  .logout-btn:hover {
-    background: var(--danger-dark);
-    transform: translateY(-2px);
-  }
+    .logout-btn:hover {
+      background: var(--danger-dark);
+      transform: translateY(-2px);
+    }
 
-  .dashboard-content {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 20px;
-  }
+    /* Dashboard content */
+    .dashboard-content {
+      flex: 1;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
 
-  .header-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-  }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
 
-  .btn-create {
-    background: var(--primary);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: var(--radius);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
 
-  .btn-create:hover {
-    background: var(--primary-dark);
-  }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
 
-  .blog-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
+    .card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
 
-  .blog-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+    .card ul li {
+      margin: 8px 0;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: var(--radius);
+      font-size: 15px;
+      transition: background 0.2s, transform 0.2s;
+    }
 
-  .blog-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-  }
+    .card ul li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      display: block;
+    }
 
-  .blog-card .content {
-    padding: 15px;
-  }
+    .card ul li:hover {
+      background: var(--primary-dark);
+      transform: translateX(4px);
+    }
 
-  .blog-card h3 {
-    margin: 0;
-    color: var(--primary-dark);
-    font-size: 18px;
-  }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
 
-  .blog-card p {
-    margin: 8px 0;
-    color: var(--muted);
-    font-size: 14px;
-  }
+      .dashboard-content {
+        margin: 15px;
+        padding: 15px;
+      }
 
-  /* Modal styles */
-  .modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
+      .card ul li {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
 
-  .modal-content {
-    background: var(--card);
-    padding: 25px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    width: 90%;
-    max-width: 600px;
-    animation: slideDown 0.3s ease;
-  }
+  
 
-  @keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-  }
-
-  .btn-submit {
-    background: var(--primary);
-    color: #fff;
-  }
-  .btn-cancel {
-    background: #e0e0e0;
-    color: var(--text);
-  }
-</style>
-
-<!-- Dashboard Header -->
-<div class="dashboard-header">
-  <h2>Welcome, <?php echo htmlspecialchars($_SESSION["username"]); ?> </h2>
-  <form action="../auth/logout.php" method="POST">
-    <button type="submit" class="logout-btn">Logout</button>
-  </form>
-</div>
-
-<!-- Dashboard Content -->
-<div class="dashboard-content">
-  <div class="header-actions">
-    <h1>Your Blogs</h1>
-    <button class="btn-create" onclick="openModal()">+ Create New Post</button>
-  </div>
-
-  <!-- Blog List -->
-  <div class="blog-list">
-    <?php foreach ($blogs as $blog): ?>
-      <div class="blog-card">
-        <img src="<?= $blog['image'] ?>" alt="Blog Image">
-        <div class="content">
-          <h3><?= htmlspecialchars($blog['title']) ?></h3>
-          <p><strong>Category:</strong> <?= htmlspecialchars($blog['category']) ?></p>
-          <p><?= htmlspecialchars($blog['content']) ?></p>
-        </div>
-      </div>
-    <?php endforeach; ?>
-  </div>
-</div>
-
-<!-- Create Post Modal -->
-<div class="modal" id="createModal">
-  <div class="modal-content">
-    <h2>Create New Post</h2>
-    <form action="save_post.php" method="POST" enctype="multipart/form-data">
-      <div>
-        <label for="title">Post Title</label>
-        <input type="text" id="title" name="title" required>
-      </div>
-
-      <div>
-        <label for="category">Category</label>
-        <select id="category" name="category" required>
-          <option value="">-- Select Category --</option>
-          <option value="Guides">Guides</option>
-          <option value="Programming">Programming</option>
-          <option value="Lifestyle">Lifestyle</option>
-          <option value="Technology">Technology</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="image">Featured Image</label>
-        <input type="file" id="image" name="image" accept="image/*">
-      </div>
-
-      <div>
-        <label for="content">Content</label>
-        <textarea id="content" name="content" required></textarea>
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn-submit">Publish</button>
-        <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-      </div>
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h2>Welcome, <?= $username ?> (<?= ucfirst($role) ?>)</h2>
+    <form action="../auth/logout.php" method="POST">
+      <button type="submit" class="logout-btn">Logout</button>
     </form>
   </div>
-</div>
 
-<script>
-  const modal = document.getElementById('createModal');
-  function openModal() { modal.style.display = 'flex'; }
-  function closeModal() { modal.style.display = 'none'; }
-  window.onclick = function(e) {
-    if (e.target === modal) closeModal();
-  }
-</script>
+  <!-- Content -->
+  <div class="dashboard-content">
+    <?php if ($role === "admin"): ?>
+      <h1>Admin Dashboard</h1>
+      <div class="card">
+        <h3>System Management</h3>
+        <ul>
+          <li><a href="../users/manageUsers.php"> Manage Users</a></li>
+          <li><a href="../users/manageBlogs.php"> Manage All Blogs</a></li>
+          <li><a href="../admin/reports.php"> View Reports & Analytics</a></li>
+          <li><a href="../admin/settings.php"> System Settings</a></li>
+        </ul>
+      </div>
 
-<?php include('../layouts/footer.php'); ?>
+    <?php elseif ($role === "employee"): ?>
+      <h1>Employee Dashboard</h1>
+      <div class="card">
+        <h3>Blogs</h3>
+        <ul>
+          <li><a href="../blogs/createBlog.php">Create New Blogs</a></li>
+          <li><a href="../blogs/manageBlogs.php"> Edit/Delete Blogs</a></li>
+          <li><a href="../events/invite.php"> Invite Attendees</a></li>
+        </ul>
+      </div>
+
+    <?php elseif ($role === "user"): ?>
+      <h1>User Dashboard</h1>
+      <div class="card">
+        <h3>My Activities</h3>
+        <ul>
+          <li><a href="../blogs/browse.php"> Browse Blogs</a></li>
+          <li><a href="../blogs/trending.php"> Trending Blogs</a></li>
+          <li><a href="../blogs/myBlogs.php">View My Blogs</a></li>
+        </ul>
+      </div>
+
+    <?php else: ?>
+      <p>Role not recognized. Please contact admin.</p>
+    <?php endif; ?>
+  </div>
+
+  <!-- Footer -->
+  <?php include("../layouts/footer.php"); ?>
+
+</body>
+</html>

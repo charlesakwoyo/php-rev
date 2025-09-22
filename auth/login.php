@@ -1,6 +1,4 @@
 <?php
-
-
 require('../db.php');
 session_start();
 
@@ -10,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($email) && !empty($password)) {
         try {
-            //check for user in db
+            // check for user in db
             $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":email", $email);
@@ -20,19 +18,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($user && password_verify($password, $user['password'])) {
                 // store session
-                $_SESSION["user_id"] = $user["id"];
-                $_SESSION["username"] = $user["username"];
+                $_SESSION["user_id"]   = $user["id"];
+                $_SESSION["username"]  = $user["username"];
+                $_SESSION["role"]      = $user["role"]; 
 
-                header("Location: ../users/dashboard.php");
+                // redirect based on role
+                switch ($user["role"]) {
+                    case "admin":
+                        header("Location: ../users/dashboard.php");
+                        break;
+                    case "employee":
+                        header("Location: ../users/dashboard.php");
+                        break;
+                    case "user":
+                        header("Location: ../users/dashboard.php");
+                        break;
+                    default:
+                        // fallback if role is missing
+                        header("Location: ../users/dashboard.php");
+                        break;
+                }
                 exit();
             } else {
-                echo  "Invalid email or password!";
+                $error = "Invalid email or password!";
             }
         } catch (PDOException $e) {
-            echo  "Error: " . $e->getMessage();
+            $error = "Error: " . $e->getMessage();
         }
     } else {
-        echo  "Please fill in all fields.";
+        $error = "Please fill in all fields.";
     }
 }
 ?>
